@@ -3,12 +3,15 @@ import { Mutation } from 'react-apollo';
 import { addCustomer } from '../../graphql/mutations'
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl';
+import Slide from '@material-ui/core/Slide';
+import Paper from '@material-ui/core/Paper';
 
 
 class CreateCustomer extends React.Component {
-  constructor(props) {
+  constructor() {
     super()
     this.state = {
       name: ''
@@ -22,38 +25,46 @@ class CreateCustomer extends React.Component {
   };
 
   render() {
-    const { classes, refetch, history } = this.props
+    const { classes, refetch } = this.props
 
     return (
       <Mutation mutation={addCustomer} onCompleted ={data => {
         refetch()
-        history.push(`/customers/${data.createCustomer._id}`)
+        this.setState({name: ''})
       }}>
         {(create, { loading, error }) => {
-          if(loading) { return 'Loading' }
           if(error) { return 'Error!' }
           return (
-          <div>
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                create({ variables: { name: this.state.name} }) }}
-              noValidate
-              autoComplete="off">
-              <FormControl margin="normal" required fullWidth>
-                <TextField
-                  required
-                  id="standard-name"
-                  label="Name"
-                  className={classes.textField}
-                  value={this.state.name}
-                  onChange={this.handleChange('name')}
-                  margin="normal"
-                />
-              </FormControl>
-              <Button variant="contained" color="primary" type="submit">Add customer</Button>
-            </form>
-          </div>
+          <Slide direction="left" in={!loading} mountOnEnter unmountOnExit>
+            <Paper className={classes.paper}>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  create({ variables: { name: this.state.name} }) }}
+                noValidate
+                autoComplete="off">
+                <FormControl margin="normal" required fullWidth>
+                  <TextField
+                    required
+                    id="standard-name"
+                    label="Name"
+                    className={classes.textField}
+                    value={this.state.name}
+                    onChange={this.handleChange('name')}
+                    margin="normal"
+                  />
+                </FormControl>
+                <Button 
+                  disabled={loading}
+                  variant="contained" 
+                  color="primary" 
+                  type="submit">
+                  {loading ? 
+                    <CircularProgress size={24} className={classes.buttonProgress} /> : "Add"}
+                </Button>
+              </form>
+            </Paper>
+          </Slide>
           )
         }}
       </Mutation>
@@ -64,5 +75,9 @@ class CreateCustomer extends React.Component {
 export default withStyles((theme) => ({
   root: {
     paddingTop: "20px"
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    color: theme.palette.text.secondary,
   }
 }))(CreateCustomer)

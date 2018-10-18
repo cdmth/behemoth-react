@@ -6,7 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Slide from '@material-ui/core/Slide';
+import Paper from '@material-ui/core/Paper';
 
 class EditCustomer extends React.Component {
   constructor(props) {
@@ -43,59 +45,63 @@ class EditCustomer extends React.Component {
   }
 
   render() {
-    const { classes, refetch, history } = this.props
-    const { loading, _id } = this.state;
-
-    console.log(_id)
-
-    if(loading) { return "Loading" }
+    const { classes, refetch } = this.props
+    const { _id } = this.state;
 
     return (
       <Mutation mutation={updateCustomer}
-      onCompleted ={data => {
+      onCompleted ={() => {
         refetch()
-        history.push(`/customers/${data.updateCustomer._id}`)
       }}>
       {(edit, { loading, error }) => {
-        if(loading) { return 'Loading' }
         if(error) { return 'Error!' }
         return (
-        <div>
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              edit({ variables: {_id, name: this.state.name} }) }}
-            noValidate
-            autoComplete="off">
-            <FormControl margin="normal" required fullWidth>
-              <TextField
-                required
-                id="standard-name"
-                label="Name"
-                className={classes.textField}
-                value={this.state.name}
-                onChange={this.handleChange('name')}
-                margin="normal"
-              />
-            </FormControl>
-            <Button variant="contained" color="primary" type="submit">Update</Button>
-            <Mutation 
-              mutation={deleteCustomer}
-              onCompleted ={() => {
-                refetch()
-                history.push(`/customers/`)
-              }}
-            >
-              {(deleteC) => (
-                <Button 
-                  variant="contained" 
-                  color="secondary" 
-                  onClick={() => deleteC({ variables: { _id }})}>Delete Customer
-                </Button>
-              )}
-            </Mutation>
-          </form>
-        </div>
+        <Slide direction="left" in={!this.state.loading} mountOnEnter unmountOnExit>
+          <Paper className={classes.paper}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                edit({ variables: {_id, name: this.state.name} }) }}
+              noValidate
+              autoComplete="off">
+              <FormControl margin="normal" required fullWidth>
+                <TextField
+                  required
+                  disabled={loading}
+                  id="standard-name"
+                  label="Name"
+                  className={classes.textField}
+                  value={this.state.name}
+                  onChange={this.handleChange('name')}
+                  margin="normal"
+                />
+              </FormControl>
+              <Button 
+                disabled={loading}
+                variant="contained" 
+                color="primary" 
+                type="submit">
+                {loading ? <CircularProgress size={24} className={classes.buttonProgress} /> : "Update"}
+              </Button>
+              <Mutation 
+                mutation={deleteCustomer}
+                onCompleted ={() => {
+                  refetch()
+                }}
+              >
+                {(deleteC, {loading}) => (
+                  <Button 
+                    disabled={loading}
+                    variant="contained" 
+                    color="secondary" 
+                    onClick={() => deleteC({ variables: { _id }})}>
+                    {loading ? <CircularProgress size={24} className={classes.buttonProgress} /> : "Delete"}
+                  </Button>
+                )}
+              </Mutation>
+            </form>
+          </Paper>
+        </Slide>
         )
       }}
     </Mutation>
@@ -107,5 +113,8 @@ export default withStyles((theme) => ({
   root: {
     paddingTop: "20px"
   },
-
+  paper: {
+    padding: theme.spacing.unit * 2,
+    color: theme.palette.text.secondary,
+  }
 }))(withApollo(EditCustomer))
