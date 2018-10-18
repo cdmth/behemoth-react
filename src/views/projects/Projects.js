@@ -2,7 +2,7 @@ import React from 'react'
 import { Query } from 'react-apollo'
 import { queryAllProjects } from '../../graphql/queries'
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List';
@@ -20,7 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import SettingsIcon from '@material-ui/icons/Settings';
 import WorkIcon from '@material-ui/icons/Work';
 
-// import CreateCustomer from './CreateCustomer'
+import CreateProject from './CreateProject'
 // import EditCustomer from './EditCustomer'
 // import Customer from './Customer'
 
@@ -31,7 +31,7 @@ class Customers extends React.Component {
 
     return (
       <Query query={queryAllProjects}>
-        {({ loading, error, data }) => {
+        {({ loading, error, data, refetch }) => {
           if (loading) { return "Loading" }
           if (error) { return `Error! ${error.message}` }
 
@@ -45,7 +45,7 @@ class Customers extends React.Component {
                     aria-label="Add" 
                     className={classes.button}
                     component={Link} 
-                    to={`/customers/create`}
+                    to={`/projects/create`}
                     >
                     <AddIcon />
                   </Button>
@@ -56,7 +56,7 @@ class Customers extends React.Component {
                           <ListSubheader>{customer.name}</ListSubheader>
                           {customer.projects.map(project => (
                             <ListItem 
-                              key={customer._id} 
+                              key={project._id} 
                               component={Link} 
                               to={`/customers/${project._id}`} 
                               button
@@ -68,7 +68,7 @@ class Customers extends React.Component {
                               </ListItemAvatar>
                               <ListItemText
                                 primary={`${project.name}`}
-                                secondary={`${project.name}`}
+                                secondary={`${customer.name}`}
                               />
                               <ListItemSecondaryAction>
                                 <IconButton 
@@ -87,8 +87,14 @@ class Customers extends React.Component {
                   </List>
                 </Grid>
                 <Grid item={true} md={6}>
-                {/* <Route path="/customers/create" component={CreateCustomer} />
-                <Route path="/customers/:id" component={Customer} />
+                <Route
+                    exact={true}
+                    path="/projects/create"
+                    render={props => (
+                      <CreateProject refetch={() => refetch()} {...props} />
+                    )}
+                  />
+                {/* <Route path="/customers/:id" component={Customer} />
                 <Route path="/customers/settings/:id" component={EditCustomer} /> */}
                 </Grid>
               </Grid>
