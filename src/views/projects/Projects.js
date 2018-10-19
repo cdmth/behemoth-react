@@ -21,11 +21,11 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import WorkIcon from '@material-ui/icons/Work';
 
 import CreateProject from './CreateProject'
-// import EditCustomer from './EditCustomer'
-// import Customer from './Customer'
+import EditProject from './EditProject'
+import Project from './Project'
 
 
-class Customers extends React.Component {
+class Projects extends React.Component {
   render() {
     const { classes } = this.props
 
@@ -49,16 +49,16 @@ class Customers extends React.Component {
                     >
                     <AddIcon />
                   </Button>
-                  <List subheader={<li />}>
+                  <List className={classes.list} subheader={<li />}>
                     {data.customers.map(customer => (
                       <li key={`section-${customer._id}`}>
-                        <ul>
+                        <ul className={classes.list}>
                           <ListSubheader>{customer.name}</ListSubheader>
                           {customer.projects.map(project => (
                             <ListItem 
                               key={project._id} 
                               component={Link} 
-                              to={`/customers/${project._id}`} 
+                              to={`/projects/show/${project._id}`} 
                               button
                               >
                               <ListItemAvatar>
@@ -68,7 +68,7 @@ class Customers extends React.Component {
                               </ListItemAvatar>
                               <ListItemText
                                 primary={`${project.name}`}
-                                secondary={`${customer.name}`}
+                                secondary={`${customer.name} jee`}
                               />
                               <ListItemSecondaryAction>
                                 <IconButton 
@@ -94,8 +94,14 @@ class Customers extends React.Component {
                       <CreateProject refetch={() => refetch()} {...props} />
                     )}
                   />
-                {/* <Route path="/customers/:id" component={Customer} />
-                <Route path="/customers/settings/:id" component={EditCustomer} /> */}
+                  <Route path="/projects/show/:id" component={Project} />
+                  <Route
+                    exact={true}
+                    path="/projects/settings/:id"
+                    render={props => (
+                      <EditProject refetch={() => refetch()} {...props} />
+                    )}
+                  />
                 </Grid>
               </Grid>
             </div>
@@ -114,5 +120,9 @@ export default withStyles((theme) => ({
     padding: theme.spacing.unit * 2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
+  },
+  list: {
+    listStyleType: 'none',
+    paddingLeft: '0px'
   }
-}))(Customers)
+}))(Projects)

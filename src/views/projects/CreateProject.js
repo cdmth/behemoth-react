@@ -52,7 +52,7 @@ class CreateCustomer extends React.Component {
         mutation={addProject}
         onCompleted={() => {
           refetch();
-          this.setState({ customerId: "" });
+          this.setState({ name: '', customerId: '' });
         }}
       >
         {(create, { loading, error }) => {

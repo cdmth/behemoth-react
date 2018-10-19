@@ -1,7 +1,7 @@
 import React from 'react'
 import { withApollo, Mutation } from 'react-apollo';
-import { queryCustomer } from '../../graphql/queries'
-import { updateCustomer, deleteCustomer } from '../../graphql/mutations'
+import { queryProject } from '../../graphql/queries'
+import { updateProject, deleteProject } from '../../graphql/mutations'
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
 
-class EditCustomer extends React.Component {
+class EditProject extends React.Component {
   constructor(props) {
     super()
     this.state = {
@@ -34,12 +34,12 @@ class EditCustomer extends React.Component {
   async fetchData(props) {
     const { client } = props;
     const result = await client.query({
-      query: queryCustomer, variables: {_id: props.match.params.id}
+      query: queryProject, variables: {_id: props.match.params.id}
     });
 
     this.setState({
-      name: result.data.customer.name,
-      _id: result.data.customer._id,
+      name: result.data.project.name,
+      _id: result.data.project._id,
       loading: false,
     });
   }
@@ -48,11 +48,13 @@ class EditCustomer extends React.Component {
     const { classes, refetch } = this.props
     const { _id } = this.state;
 
+    console.log(this.state)
+
     return (
-      <Mutation mutation={updateCustomer}
+      <Mutation mutation={updateProject}
       onCompleted ={() => {
         refetch()
-        this.setState({name: ''})
+        this.setState({name: '', _id: ''})
       }}>
       {(edit, { loading, error }) => {
         if(error) { return 'Error!' }
@@ -62,6 +64,7 @@ class EditCustomer extends React.Component {
             <form
               onSubmit={e => {
                 e.preventDefault();
+                console.log(_id)
                 edit({ variables: {_id, name: this.state.name} }) }}
               noValidate
               autoComplete="off">
@@ -85,10 +88,10 @@ class EditCustomer extends React.Component {
                 {loading ? <CircularProgress size={24} className={classes.buttonProgress} /> : "Update"}
               </Button>
               <Mutation 
-                mutation={deleteCustomer}
+                mutation={deleteProject}
                 onCompleted ={() => {
                   refetch()
-                  this.setState({name: ''})
+                  this.setState({name: '', _id: ''})
                 }}
               >
                 {(deleteC, {loading}) => (
@@ -119,4 +122,4 @@ export default withStyles((theme) => ({
     padding: theme.spacing.unit * 2,
     color: theme.palette.text.secondary,
   }
-}))(withApollo(EditCustomer))
+}))(withApollo(EditProject))

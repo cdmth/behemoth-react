@@ -77,6 +77,7 @@ export const queryAllProjects= gql`
 export const queryProject = gql`
     query project($_id: String!) {
       project(_id: $_id) {
+        _id
         name
       }
     }
@@ -144,18 +145,6 @@ export const getProjectWorkers = gql`
         _id
         name
       }
-    }
-  }
-`
-
-export const createEntry = gql`
-  mutation CreateEntry($projectId: String!, $workerId: String!, $start: String, $end: String, $description: String) {
-    createEntry(projectId: $projectId, workerId: $workerId, start: $start, end: $end, description: $description) {
-      projectId
-      workerId
-      start
-      end
-      description
     }
   }
 `

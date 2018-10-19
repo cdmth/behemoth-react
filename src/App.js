@@ -10,6 +10,7 @@ import LeftBar from './partials/LeftBar'
 import Dashboard from './views/dashboard/Dashboard'
 import Customers from './views/customers/Customers'
 import Projects from './views/projects/Projects'
+import Entries from './views/entries/Entries'
 
 const drawerWidth = 240;
 
@@ -29,7 +30,7 @@ const App = (props) => {
           <Route exact={true} path="/" component={Dashboard} />
           <Route path="/customers" component={Customers} />
           <Route path="/projects" component={Projects} />
-          <Route path="/entries" component={Dashboard} />
+          <Route path="/entries" component={Entries} />
           <Route path="/workers" component={Dashboard} />
           <Route path="/bills" component={Dashboard} />
           <Route path="/login" component={Dashboard} />

@@ -72,6 +72,7 @@ export const addProject = gql`
 export const updateProject = gql`
   mutation updateProject($_id: String!, $name: String!) {
     updateProject(_id: $_id, name: $name) {
+      _id
       name
     }
   }
@@ -136,4 +137,16 @@ mutation Login($email: String!, $password: String!) {
     token
   }
 }
+`
+
+export const createEntry = gql`
+  mutation CreateEntry($projectId: String!, $workerId: String!, $start: String, $end: String, $description: String) {
+    createEntry(projectId: $projectId, workerId: $workerId, start: $start, end: $end, description: $description) {
+      projectId
+      workerId
+      start
+      end
+      description
+    }
+  }
 `

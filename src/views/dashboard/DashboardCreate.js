@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Query, Mutation } from 'react-apollo'
-import { getProjects, createEntry } from '../../graphql/queries'
-import { updateEntry, deleteEntry } from '../../graphql/mutations'
+import { getProjects } from '../../graphql/queries'
+import { updateEntry, deleteEntry, createEntry } from '../../graphql/mutations'
 import * as moment from 'moment'
 
 import { withStyles } from '@material-ui/core/styles' 
