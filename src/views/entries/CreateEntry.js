@@ -71,7 +71,6 @@ class DashboardCreate extends React.Component {
 
   async fetchProjectWorkers(projectId) {
     this.setState({ loading: true })
-    const { client } = this.props;
     const result = await this.props.client.query({
       query: getProjectWorkers, variables: { projectId }
     });
@@ -103,7 +102,7 @@ class DashboardCreate extends React.Component {
               return "Loading";
             }
 
-            const { _id, start, end, description, projectId, projects, workers } = this.state;
+            const { _id, start, end, description, projectId, projects } = this.state;
 
             const entry = () => {
               return { _id, start, end, description, projectId };

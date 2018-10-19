@@ -150,3 +150,19 @@ export const createEntry = gql`
     }
   }
 `
+
+export const addProjectWorker = gql`
+  mutation addWorkerToProject($workerId: String!, $projectId: String!, $rate: Float) {
+    addWorkerToProject(workerId: $workerId, projectId: $projectId, rate: $rate) {
+      message
+    }
+  }
+`
+
+export const deleteProjectWorker = gql`
+  mutation deleteWorkerFromProject($workerId: String!, $projectId: String!) {
+    deleteWorkerFromProject(workerId: $workerId, projectId: $projectId) {
+      message
+    }
+  }
+`

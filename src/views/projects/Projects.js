@@ -68,7 +68,7 @@ class Projects extends React.Component {
                               </ListItemAvatar>
                               <ListItemText
                                 primary={`${project.name}`}
-                                secondary={`${customer.name} jee`}
+                                secondary={`${customer.name}`}
                               />
                               <ListItemSecondaryAction>
                                 <IconButton 

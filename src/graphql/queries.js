@@ -74,16 +74,6 @@ export const queryAllProjects= gql`
   }
 `
 
-// Get single project
-export const queryProject = gql`
-    query project($_id: String!) {
-      project(_id: $_id) {
-        _id
-        name
-      }
-    }
-`
-
 // Get all projects subscription
 export const projectsSubscription = gql`
   subscription {
@@ -139,9 +129,21 @@ export const getEntries = gql`
   }
 `
 
+// Get single project
+export const queryProject = gql`
+    query project($_id: String!) {
+      project(_id: $_id) {
+        _id
+        name
+      }
+    }
+`
+
 export const getProjectWorkers = gql`
-  query project($projectId: String!) {
-    project(_id: $projectId) {
+  query project($_id: String!) {
+    project(_id: $_id) {
+      _id
+      name
       workers {
         _id
         name
@@ -163,27 +165,11 @@ export const entriesSubscription = gql`
   }
 `
 
-export const deleteWorker = gql`
-  mutation deleteWorkerFromProject($workerId: String!, $projectId: String!) {
-    deleteWorkerFromProject(workerId: $workerId, projectId: $projectId) {
-      message
-    }
-  }
-`
-
 export const projectWorkersSubscription = gql`
   subscription {
     projectWorkers {
       _id
       name
-    }
-  }
-`
-
-export const addProjectWorker = gql`
-  mutation addWorkerToProject($workerId: String!, $projectId: String!, $rate: Float) {
-    addWorkerToProject(workerId: $workerId, projectId: $projectId, rate: $rate) {
-      message
     }
   }
 `
