@@ -11,13 +11,12 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
 import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
-import { countHours, durationInHours } from '../../helpers/Timehelper'
+import { countHours } from '../../helpers/Timehelper'
 import 'typeface-roboto';
 
 class DashboardList extends React.Component {
   render() {
     const { entries } = this.props
-    console.log(entries)
     return (
       <List>
         {entries.map((entry) => (
@@ -34,7 +33,7 @@ class DashboardList extends React.Component {
           <ListItemSecondaryAction>
             <IconButton aria-label="Delete">
               <OfflineBoltIcon />
-              <p>{` ${durationInHours(entry.start, entry.end)*100}e`}</p>
+              <p>{entry.price}</p>
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>

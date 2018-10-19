@@ -21,6 +21,7 @@ import Grid from "@material-ui/core/Grid";
 
 import CreateEntry from "./CreateEntry";
 import CalendarEntry from "./CalendarEntry";
+import ListEntries from '../dashboard/DashboardList'
 // import EditCustomer from "./EditCustomer";
 // import Customer from "./Customer";
 
@@ -164,8 +165,8 @@ class Entries extends React.Component {
               entry={this.state}
               refetch={() => refetch()}
               selectProject={projectId => this.selectProject(projectId)}
-              
             />
+            <ListEntries entries={loading ? [] : entries} />
           </Grid>
           <Grid item={true} md={8}>
             <CalendarEntry

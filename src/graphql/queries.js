@@ -118,6 +118,7 @@ export const getEntries = gql`
       start
       end
       description
+      price
       worker {
         name
         rate

@@ -11,7 +11,6 @@ import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsPr
 import MomentUtils from "material-ui-pickers/utils/moment-utils";
 import { InlineDateTimePicker } from "material-ui-pickers/DateTimePicker";
 import Button from "@material-ui/core/Button";
-import { reflect } from "async";
 
 class CreateEntry extends React.Component {
   constructor(props) {
@@ -39,7 +38,11 @@ class CreateEntry extends React.Component {
 
     return (
       <div className="">
-        <Mutation mutation={edit ? updateEntry : createEntry}  onCompleted={() => refetch()}>
+        <Mutation mutation={edit ? updateEntry : createEntry}  onCompleted={() => {
+          handleChange("creating", false)
+          handleChange("initTime", true)
+          refetch()
+          }}>
           {(create, { loading }) => {
             if (loading) {
               return "Loading";
