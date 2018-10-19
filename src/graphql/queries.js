@@ -44,6 +44,7 @@ export const queryAllWorkers = gql`
 export const queryWorker = gql`
   query worker($_id: String!) {
     worker(_id: $_id) {
+      _id
       name
     }
   }

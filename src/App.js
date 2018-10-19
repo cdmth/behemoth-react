@@ -11,6 +11,7 @@ import Dashboard from './views/dashboard/Dashboard'
 import Customers from './views/customers/Customers'
 import Projects from './views/projects/Projects'
 import Entries from './views/entries/Entries'
+import Workers from './views/workers/Workers'
 
 const drawerWidth = 240;
 
@@ -31,7 +32,7 @@ const App = (props) => {
           <Route path="/customers" component={Customers} />
           <Route path="/projects" component={Projects} />
           <Route path="/entries" component={Entries} />
-          <Route path="/workers" component={Dashboard} />
+          <Route path="/workers" component={Workers} />
           <Route path="/bills" component={Dashboard} />
           <Route path="/login" component={Dashboard} />
         </main>
