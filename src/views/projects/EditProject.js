@@ -112,6 +112,11 @@ class EditProject extends React.Component {
                   </FormControl>
 
                   <div className={classes.workerArea}>
+                    <div>
+                      <InputLabel htmlFor="workerArea">
+                        Project workers
+                      </InputLabel>
+                    </div>
                     <Mutation
                       mutation={deleteProjectWorker}
                       onCompleted={() => {
@@ -123,11 +128,6 @@ class EditProject extends React.Component {
                           ? ""
                           : projectWorkers.map(w => (
                               <div key={w._id} id="workerArea">
-                                <div>
-                                  <InputLabel htmlFor="workerArea">
-                                    Project workers
-                                  </InputLabel>
-                                </div>
                                 <Chip
                                   icon={<FaceIcon />}
                                   label={w.name}

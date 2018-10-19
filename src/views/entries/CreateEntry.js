@@ -38,11 +38,14 @@ class CreateEntry extends React.Component {
 
     return (
       <div className="">
-        <Mutation mutation={edit ? updateEntry : createEntry}  onCompleted={() => {
-          handleChange("creating", false)
-          handleChange("initTime", true)
-          refetch()
-          }}>
+        <Mutation
+          mutation={edit ? updateEntry : createEntry}
+          onCompleted={() => {
+            handleChange("creating", false);
+            handleChange("initTime", true);
+            refetch();
+          }}
+        >
           {(create, { loading }) => {
             if (loading) {
               return "Loading";
@@ -159,7 +162,10 @@ class CreateEntry extends React.Component {
                   </div>
                 </div>
                 {edit ? (
-                  <Mutation mutation={deleteEntry} onCompleted={() => refetch()}>
+                  <Mutation
+                    mutation={deleteEntry}
+                    onCompleted={() => refetch()}
+                  >
                     {deleteC => (
                       <Button
                         variant="contained"
