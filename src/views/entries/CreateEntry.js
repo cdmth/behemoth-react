@@ -1,9 +1,6 @@
 import * as React from "react";
 import { withApollo, Mutation } from "react-apollo";
-import { getProjects, getProjectWorkers } from "../../graphql/queries";
 import { createEntry, updateEntry, deleteEntry } from "../../graphql/mutations";
-import * as moment from "moment";
-
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,129 +11,93 @@ import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsPr
 import MomentUtils from "material-ui-pickers/utils/moment-utils";
 import { InlineDateTimePicker } from "material-ui-pickers/DateTimePicker";
 import Button from "@material-ui/core/Button";
+import { reflect } from "async";
 
-class DashboardCreate extends React.Component {
+class CreateEntry extends React.Component {
   constructor(props) {
     super();
-
-    this.state = {
-      _id: "",
-      projectId: "",
-      start: moment(),
-      end: moment(),
-      description: "",
-      entry: {},
-      edit: false,
-      initTime: true,
-      creating: false,
-      projects: [],
-      workers: []
-    };
-
-    this.fetchProjects(props); 
-  }
-
-  handleEntryClick(entry) {
-    entry.start = moment(entry.start);
-    entry.end = moment(entry.end);
-
-    this.setState({
-      ...entry,
-      edit: entry._id !== "" ? true : false,
-      initTime: false
-    });
-  }
-
-  handleCreateClick(times) {
-    times.start = moment(times.start);
-    times.end = moment(times.end);
-
-    const { start, end } = times;
-
-    this.setState({ start, end, edit: false, _id: "", initTime: false });
-  }
-
-  async fetchProjects(props) {
-    this.setState({ loading: true })
-    const { client } = props;
-    const result = await client.query({
-      query: getProjects
-    });
-
-    this.setState({
-      projects: result.data.projects,
-      loading: false,
-    });
-  }
-
-  async fetchProjectWorkers(projectId) {
-    this.setState({ loading: true })
-    const result = await this.props.client.query({
-      query: getProjectWorkers, variables: { projectId }
-    });
-
-    this.setState({
-      name: result.data.project.name,
-      _id: result.data.project._id,
-      loading: false,
-    });
-  }
-
-  async selectProject(event) {
-
-    await this.fetchProjectWorkers(event.target.value)
-    
-    this.setState({
-      projectId: event.target.value
-    })
   }
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      entry: {
+        _id,
+        start,
+        end,
+        description,
+        projectId,
+        workerId,
+        edit,
+        workers,
+        projects
+      },
+      handleChange,
+      refetch,
+      selectProject
+    } = this.props;
 
     return (
       <div className="">
-        <Mutation mutation={this.state.edit ? updateEntry : createEntry}>
+        <Mutation mutation={edit ? updateEntry : createEntry}  onCompleted={() => refetch()}>
           {(create, { loading }) => {
             if (loading) {
               return "Loading";
             }
 
-            const { _id, start, end, description, projectId, projects } = this.state;
-
             const entry = () => {
-              return { _id, start, end, description, projectId };
+              return { _id, start, end, description, projectId, workerId };
             };
 
             return (
               <form
                 onSubmit={e => {
                   e.preventDefault();
-                  this.setState({ creating: true });
+                  handleChange("creating", true);
                   create({ variables: entry() });
                 }}
                 autoComplete="off"
               >
                 <div className="add-bar">
                   <div className={classes.root}>
-                    <FormControl className={classes.inputField}>
+                    <FormControl fullWidth className={classes.textField}>
                       <InputLabel htmlFor="select-project">
                         Select project
                       </InputLabel>
                       <Select
-                        value={this.state.projectId}
-                        onChange={event => this.selectProject(event)}
+                        value={projectId}
+                        onChange={event => selectProject(event.target.value)}
                         inputProps={{
                           name: "Project",
                           id: "select-project"
                         }}
                       >
                         {projects.map(project => (
-                          <MenuItem
-                            key={project._id}
-                            value={project._id}
-                          >
+                          <MenuItem key={project._id} value={project._id}>
                             {project.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className={classes.root}>
+                    <FormControl fullWidth className={classes.textField}>
+                      <InputLabel htmlFor="select-worker">
+                        Select worker
+                      </InputLabel>
+                      <Select
+                        disabled={projectId === ""}
+                        value={workerId}
+                        onChange={e => handleChange("workerId", e.target.value)}
+                        inputProps={{
+                          name: "Project",
+                          id: "select-project"
+                        }}
+                      >
+                        {workers.map(worker => (
+                          <MenuItem key={worker._id} value={worker._id}>
+                            {worker.name}
                           </MenuItem>
                         ))}
                       </Select>
@@ -150,9 +111,9 @@ class DashboardCreate extends React.Component {
                       label="Description"
                       multiline={true}
                       rowsMax="6"
-                      value={this.state.description}
+                      value={description}
                       onChange={event =>
-                        this.setState({ description: event.target.value })
+                        handleChange("description", event.target.value)
                       }
                       margin="normal"
                       fullWidth={true}
@@ -164,22 +125,20 @@ class DashboardCreate extends React.Component {
                       <InlineDateTimePicker
                         className={classes.inputField}
                         label="Start time"
-                        value={this.state.start.toDate()}
-                        onChange={start => this.setState({ start })}
-                        handleAccept={() => console.log("JE")}
+                        value={start.toDate()}
+                        onChange={start => handleChange("start", start)}
                         ampm={false}
-                        maxDate={this.state.end.toDate()}
+                        maxDate={end.toDate()}
                         format="DD.MM HH:mm"
                       />
 
                       <InlineDateTimePicker
                         className={classes.inputField}
                         label="End time"
-                        value={this.state.end.toDate()}
-                        onChange={end => this.setState({ end })}
-                        handleAccept={() => console.log("JE")}
+                        value={end.toDate()}
+                        onChange={end => handleChange("end", end)}
                         ampm={false}
-                        minDate={this.state.start.toDate()}
+                        minDate={start.toDate()}
                         format="DD.MM HH:mm"
                       />
                     </div>
@@ -192,19 +151,21 @@ class DashboardCreate extends React.Component {
                       variant="contained"
                       color="primary"
                     >
-                      {this.state.edit ? "Update entry" : "Create entry"}
+                      {edit ? "Update entry" : "Create entry"}
                     </Button>
                   </div>
                 </div>
-                {this.state.edit ? (
-                  <Mutation mutation={deleteEntry}>
+                {edit ? (
+                  <Mutation mutation={deleteEntry} onCompleted={() => refetch()}>
                     {deleteC => (
                       <Button
-                        className="button is-medium top-margin-20 is-danger is-outlined"
+                        variant="contained"
+                        className={classes.button}
+                        color="default"
                         onClick={e => {
                           e.preventDefault();
                           deleteC({
-                            variables: { _id: this.state._id }
+                            variables: { _id }
                           });
                         }}
                       >
@@ -238,4 +199,4 @@ export default withStyles(theme => ({
   button: {
     margin: theme.spacing.unit
   }
-}))(withApollo(DashboardCreate));
+}))(withApollo(CreateEntry));
