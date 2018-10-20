@@ -186,6 +186,13 @@ query Bills {
     hours
     price
     status
+    billDate
+    project {
+      name
+    }
+    customer {
+      name
+    }
   }
 }
 `
@@ -201,6 +208,25 @@ query Bill($billId: String!) {
     hours
     price
     status
+    billDate
+    project {
+      name
+    }
+    customer {
+      name
+    }
+    entries {
+      _id
+      workerId
+      start
+      end
+      description
+      price
+      worker {
+        name
+        rate
+      }
+    }
   }
 }
 `
@@ -220,6 +246,44 @@ query {
         _id
         status
       }
+    }
+  }
+}
+`
+
+export const entriesByProjectIdAndTimeRange = gql`
+query EntriesByProjectIdAndTimeRange($projectId: String!, $start: String!, $end: String!){
+  entriesByProjectIdAndTimeRange(projectId: $projectId, start: $start, end: $end) {
+    _id
+    projectId
+    start
+    end
+    description
+    price
+    worker {
+      name
+      rate
+    }
+    project {
+      name
+    }
+  }
+}
+`
+
+export const unbilledEntriesInProjects = gql`
+query unbilledEntriesInProjects {
+	unbilledEntriesInProjects {
+    project {
+      name
+      _id
+    }
+    entries {
+      _id
+      start
+      end
+      description
+      price
     }
   }
 }
