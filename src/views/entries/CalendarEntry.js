@@ -8,17 +8,15 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
-function Event({ event }) {
-  return (
-    <span>
-      <span className="">
-        <p className="">{event.name}</p>
-        <p className="">{event.description}</p>
-      </span>
-      <p className=""><strong className="">{countHours(event.start, event.end)}</strong></p>
+const eventComponent = ({ event }) => (
+  <span>
+    <span className="">
+      <p className="">{event.name}</p>
+      <p className="">{event.description}</p>
     </span>
-  )
-}
+    <p className=""><strong className="">{countHours(event.start, event.end)}</strong></p>
+  </span>
+)
 
 class CalendarEntry extends React.Component {
   constructor(props) {
@@ -47,11 +45,12 @@ class CalendarEntry extends React.Component {
           localizer={localizer}
           events={entries}
           min={minTime}
+          max={maxTime}
           selectable
           onSelectSlot={times => onSelectSlot(times)}
           onSelectEvent={entry => handleEntryClick(entry)}
           components={{
-            event: Event
+            event: eventComponent
           }}
         />
       </div>
