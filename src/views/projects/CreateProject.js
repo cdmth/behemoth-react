@@ -13,6 +13,8 @@ import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
+import TitleBar from "../../partials/TitleBar";
+
 class CreateCustomer extends React.Component {
   constructor(props) {
     super();
@@ -61,6 +63,8 @@ class CreateCustomer extends React.Component {
           }
           return (
             <Slide direction="left" in={!loading} mountOnEnter unmountOnExit>
+            <div>
+            <TitleBar title="Create project" push="/projects" />
               <Paper className={classes.paper}>
                 <form
                   onSubmit={e => {
@@ -118,6 +122,7 @@ class CreateCustomer extends React.Component {
                   </Button>
                 </form>
               </Paper>
+              </div>
             </Slide>
           );
         }}

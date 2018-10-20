@@ -22,6 +22,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Chip from "@material-ui/core/Chip";
 import FaceIcon from "@material-ui/icons/Face";
 
+import TitleBar from "../../partials/TitleBar";
+
 class EditProject extends React.Component {
   constructor(props) {
     super();
@@ -89,201 +91,210 @@ class EditProject extends React.Component {
               mountOnEnter
               unmountOnExit
             >
-              <Paper className={classes.paper}>
-                <form
-                  onSubmit={e => {
-                    e.preventDefault();
-                    edit({ variables: { _id, name: this.state.name } });
-                  }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <FormControl required fullWidth>
-                    <TextField
-                      required
-                      disabled={loading}
-                      id="standard-name"
-                      label="Name"
-                      className={classes.textField}
-                      value={this.state.name}
-                      onChange={this.handleChange("name")}
-                      margin="normal"
-                    />
-                  </FormControl>
+              <div>
+                <TitleBar title={`Edit ${this.state.name}`} push="/projects" />
+                <Paper className={classes.paper}>
+                  <form
+                    onSubmit={e => {
+                      e.preventDefault();
+                      edit({ variables: { _id, name: this.state.name } });
+                    }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <FormControl required fullWidth>
+                      <TextField
+                        required
+                        disabled={loading}
+                        id="standard-name"
+                        label="Name"
+                        className={classes.textField}
+                        value={this.state.name}
+                        onChange={this.handleChange("name")}
+                        margin="normal"
+                      />
+                    </FormControl>
 
-                  <div className={classes.workerArea}>
-                    <div>
-                      <InputLabel htmlFor="workerArea">
-                        Project workers
-                      </InputLabel>
-                    </div>
-                    <Mutation
-                      mutation={deleteProjectWorker}
-                      onCompleted={() => {
-                        data.refetch();
-                      }}
-                    >
-                      {(remove, { loading, error }) => {
-                        return this.state.loading
-                          ? ""
-                          : projectWorkers.map(w => (
-                              <div key={w._id} id="workerArea">
-                                <Chip
-                                  icon={<FaceIcon />}
-                                  label={w.name}
-                                  onClick={() =>
-                                    history.push(`/workers/show/${w._id}`)
-                                  }
-                                  onDelete={() =>
-                                    remove({
-                                      variables: {
-                                        workerId: w._id,
-                                        projectId: _id
-                                      }
-                                    })
-                                  }
-                                  className={classes.chip}
-                                  variant="outlined"
-                                />
-                              </div>
-                            ));
-                      }}
-                    </Mutation>
-
-                    <Mutation
-                      mutation={addProjectWorker}
-                      onCompleted={() => {
-                        this.setState({ workerId: "", rate: "" });
-                        data.refetch();
-                      }}
-                    >
-                      {(add, { loading, error }) => {
-                        return (
-                          <div className="add-project-worker">
-                            <FormControl className={classes.field}>
-                              <InputLabel htmlFor="select-worker">
-                                Add worker
-                              </InputLabel>
-                              <Select
-                                value={workerId}
-                                onChange={event =>
-                                  this.setState({
-                                    workerId: event.target.value
-                                  })
-                                }
-                                inputProps={{
-                                  name: "Worker",
-                                  id: "select-worker"
-                                }}
-                              >
-                                {workers.map(worker => (
-                                  <MenuItem key={worker._id} value={worker._id}>
-                                    {worker.name}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
-                            {workerId !== "" ? (
-                              <Grow in={workerId !== ""}>
-                                <div className="add-worker-wrapper">
-                                  <FormControl required fullWidth>
-                                    <TextField
-                                      required
-                                      disabled={loading}
-                                      id="standard-name"
-                                      label="Rate"
-                                      type="number"
-                                      className={classes.field}
-                                      value={rate}
-                                      onChange={this.handleChange("rate")}
-                                      margin="normal"
-                                    />
-                                  </FormControl>
-                                  <Button
-                                    className={classes.buttonGroup}
-                                    size="small"
-                                    variant="extendedFab"
-                                    color="primary"
-                                    aria-label="Add"
-                                    onClick={e =>
-                                      add({
+                    <div className={classes.workerArea}>
+                      <div>
+                        <InputLabel htmlFor="workerArea">
+                          Project workers
+                        </InputLabel>
+                      </div>
+                      <Mutation
+                        mutation={deleteProjectWorker}
+                        onCompleted={() => {
+                          data.refetch();
+                        }}
+                      >
+                        {(remove, { loading, error }) => {
+                          return this.state.loading
+                            ? ""
+                            : projectWorkers.map(w => (
+                                <div key={w._id} id="workerArea">
+                                  <Chip
+                                    icon={<FaceIcon />}
+                                    label={w.name}
+                                    onClick={() =>
+                                      history.push(`/workers/show/${w._id}`)
+                                    }
+                                    onDelete={() =>
+                                      remove({
                                         variables: {
-                                          projectId: _id,
-                                          workerId,
-                                          rate: parseFloat(rate)
+                                          workerId: w._id,
+                                          projectId: _id
                                         }
                                       })
                                     }
-                                  >
-                                    <AddIcon />
-                                    Add worker
-                                  </Button>
-                                  <Button
-                                    className={classes.buttonGroup}
-                                    disabled={loading}
-                                    variant="contained"
-                                    color="default"
-                                    onClick={() =>
-                                      this.setState({ rate: "", workerId: "" })
-                                    }
-                                  >
-                                    Cancel
-                                  </Button>
+                                    className={classes.chip}
+                                    variant="outlined"
+                                  />
                                 </div>
-                              </Grow>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        );
-                      }}
-                    </Mutation>
-                  </div>
+                              ));
+                        }}
+                      </Mutation>
 
-                  <Button
-                    className={classes.buttonGroup}
-                    disabled={loading}
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                  >
-                    {loading ? (
-                      <CircularProgress
-                        size={24}
-                        className={classes.buttonProgress}
-                      />
-                    ) : (
-                      "Update"
-                    )}
-                  </Button>
-                  <Mutation
-                    mutation={deleteProject}
-                    onCompleted={() => {
-                      refetch();
-                      this.setState({ name: "", _id: "" });
-                    }}
-                  >
-                    {(deleteC, { loading }) => (
-                      <Button
-                        className={classes.buttonGroup}
-                        disabled={loading}
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => deleteC({ variables: { _id } })}
+                      <Mutation
+                        mutation={addProjectWorker}
+                        onCompleted={() => {
+                          this.setState({ workerId: "", rate: "" });
+                          data.refetch();
+                        }}
                       >
-                        {loading ? (
-                          <CircularProgress
-                            size={24}
-                            className={classes.buttonProgress}
-                          />
-                        ) : (
-                          "Delete"
-                        )}
-                      </Button>
-                    )}
-                  </Mutation>
-                </form>
-              </Paper>
+                        {(add, { loading, error }) => {
+                          return (
+                            <div className="add-project-worker">
+                              <FormControl className={classes.field}>
+                                <InputLabel htmlFor="select-worker">
+                                  Add worker
+                                </InputLabel>
+                                <Select
+                                  value={workerId}
+                                  onChange={event =>
+                                    this.setState({
+                                      workerId: event.target.value
+                                    })
+                                  }
+                                  inputProps={{
+                                    name: "Worker",
+                                    id: "select-worker"
+                                  }}
+                                >
+                                  {workers.map(worker => (
+                                    <MenuItem
+                                      key={worker._id}
+                                      value={worker._id}
+                                    >
+                                      {worker.name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                              {workerId !== "" ? (
+                                <Grow in={workerId !== ""}>
+                                  <div className="add-worker-wrapper">
+                                    <FormControl required fullWidth>
+                                      <TextField
+                                        required
+                                        disabled={loading}
+                                        id="standard-name"
+                                        label="Rate"
+                                        type="number"
+                                        className={classes.field}
+                                        value={rate}
+                                        onChange={this.handleChange("rate")}
+                                        margin="normal"
+                                      />
+                                    </FormControl>
+                                    <Button
+                                      className={classes.buttonGroup}
+                                      size="small"
+                                      variant="extendedFab"
+                                      color="primary"
+                                      aria-label="Add"
+                                      onClick={e =>
+                                        add({
+                                          variables: {
+                                            projectId: _id,
+                                            workerId,
+                                            rate: parseFloat(rate)
+                                          }
+                                        })
+                                      }
+                                    >
+                                      <AddIcon />
+                                      Add worker
+                                    </Button>
+                                    <Button
+                                      className={classes.buttonGroup}
+                                      disabled={loading}
+                                      variant="contained"
+                                      color="default"
+                                      onClick={() =>
+                                        this.setState({
+                                          rate: "",
+                                          workerId: ""
+                                        })
+                                      }
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                </Grow>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          );
+                        }}
+                      </Mutation>
+                    </div>
+
+                    <Button
+                      className={classes.buttonGroup}
+                      disabled={loading}
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                    >
+                      {loading ? (
+                        <CircularProgress
+                          size={24}
+                          className={classes.buttonProgress}
+                        />
+                      ) : (
+                        "Update"
+                      )}
+                    </Button>
+                    <Mutation
+                      mutation={deleteProject}
+                      onCompleted={() => {
+                        refetch();
+                        this.setState({ name: "", _id: "" });
+                      }}
+                    >
+                      {(deleteC, { loading }) => (
+                        <Button
+                          className={classes.buttonGroup}
+                          disabled={loading}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => deleteC({ variables: { _id } })}
+                        >
+                          {loading ? (
+                            <CircularProgress
+                              size={24}
+                              className={classes.buttonProgress}
+                            />
+                          ) : (
+                            "Delete"
+                          )}
+                        </Button>
+                      )}
+                    </Mutation>
+                  </form>
+                </Paper>
+              </div>
             </Slide>
           );
         }}
