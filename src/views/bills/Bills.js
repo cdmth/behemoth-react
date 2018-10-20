@@ -21,11 +21,11 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import WorkIcon from "@material-ui/icons/Work";
 
 import CreateBill from "./CreateBill";
-// import EditCustomer from "./EditCustomer";
+import EditBill from "./EditBill";
 import Bill from "./Bill";
-import Unbilled from "./Unbillled"
+import Unbilled from "./Unbillled";
 
-class Customers extends React.Component {
+class Bills extends React.Component {
   render() {
     const { classes } = this.props;
 
@@ -86,7 +86,13 @@ class Customers extends React.Component {
                   </List>
                 </Grid>
                 <Grid item={true} md={6}>
-                  <Route exact={true} path="/bills" component={Unbilled} />
+                  <Route
+                    exact={true}
+                    path="/bills/"
+                    render={props => (
+                      <Unbilled refetch={() => refetch()} {...props} />
+                    )}
+                  />
                   <Route
                     exact={true}
                     path="/bills/create"
@@ -95,12 +101,12 @@ class Customers extends React.Component {
                     )}
                   />
                   <Route path="/bills/show/:id" component={Bill} />
-                  {/* <Route
+                  <Route
                     exact={true}
-                    path="/customers/settings/:id"
+                    path="/bills/settings/:id"
                     render={props => (
-                      <EditCustomer refetch={() => refetch()} {...props} />
-                    )} /> */}
+                      <EditBill refetch={() => refetch()} {...props} />
+                    )} />
                 </Grid>
               </Grid>
             </div>
@@ -120,4 +126,4 @@ export default withStyles(theme => ({
     textAlign: "center",
     color: theme.palette.text.secondary
   }
-}))(Customers);
+}))(Bills);

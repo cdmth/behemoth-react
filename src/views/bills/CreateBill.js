@@ -7,7 +7,6 @@ import {
 } from "../../graphql/queries";
 import { createBill } from "../../graphql/mutations";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
@@ -97,12 +96,10 @@ class CreateBill extends React.Component {
       customers,
       projects,
       customerId,
-      name,
       projectId,
       start,
       end,
       entries,
-      entriesLoading
     } = this.state;
 
     return (

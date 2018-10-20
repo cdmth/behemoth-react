@@ -122,6 +122,26 @@ mutation CreateBill($customerId: String!, $projectId: String!, $start: String!, 
 }
 `
 
+export const createBillFromUnbilled = gql`
+mutation createBillFromUnbilled($projectId: String!) {
+  createBillFromUnbilled(projectId: $projectId) {
+    billingPeriodStart
+    billingPeriodEnd
+    hours
+    price
+    status
+  }
+}
+`
+
+export const deleteBill = gql`
+mutation DeleteBill($_id: String!) {
+  deleteBill(_id: $_id) {
+    _id
+  }
+}
+`
+
 export const createAccount = gql`
 mutation CreateAccount($email: String!, $password: String!) {
   createAccount(email: $email, password: $password) {

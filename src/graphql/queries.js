@@ -158,6 +158,7 @@ export const entriesSubscription = gql`
     entries {
       _id
       projectId
+      billId
       workerId
       start
       end
