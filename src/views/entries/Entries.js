@@ -1,52 +1,43 @@
 import React from "react";
 import { withApollo, compose, graphql } from "react-apollo";
-import { getEntries, getProjectWorkers, getProjects } from "../../graphql/queries";
+import {
+  getEntries,
+  getProjectWorkers,
+  getProjects
+} from "../../graphql/queries";
 import { withStyles } from "@material-ui/core/styles";
-// import { Route, Link } from "react-router-dom";
-
-// import IconButton from "@material-ui/core/IconButton";
-// import List from "@material-ui/core/List";
-// import ListItem from "@material-ui/core/ListItem";
-// import ListItemText from "@material-ui/core/ListItemText";
-// import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-// import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-// import Avatar from "@material-ui/core/Avatar";
-// import Button from "@material-ui/core/Button";
-// import AddIcon from "@material-ui/icons/Add";
 import moment from "moment";
-
 import Grid from "@material-ui/core/Grid";
-// import SettingsIcon from "@material-ui/icons/Settings";
-// import WorkIcon from "@material-ui/icons/Work";
-
 import CreateEntry from "./CreateEntry";
 import CalendarEntry from "./CalendarEntry";
-import ListEntries from '../dashboard/DashboardList'
-// import EditCustomer from "./EditCustomer";
-// import Customer from "./Customer";
+import ListEntries from "../dashboard/DashboardList";
+
+const initState = {
+  _id: "",
+  projectId: "",
+  workerId: "",
+  name: "",
+  start: moment(),
+  end: moment(),
+  description: "",
+  edit: false,
+  initTime: true,
+  creating: false
+};
 
 class Entries extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      _id: "",
-      projectId: "",
-      workerId: "",
-      name: "",
-      start: moment(),
-      end: moment(),
-      description: "",
-      edit: false,
-      initTime: true,
-      creating: false,
+      ...initState,
       workers: [],
       projects: []
     };
 
-    this.fetchProjects(props); 
+    this.fetchProjects(props);
   }
 
-  onSelectSlot(selected) {
+  onSelectSlot = selected =>
     this.setState({
       start: moment(selected.start),
       end: moment(selected.end),
@@ -54,13 +45,12 @@ class Entries extends React.Component {
       initTime: false,
       _id: ""
     });
-  }
 
   async handleEntryClick(entry) {
     entry.start = moment(entry.start);
     entry.end = moment(entry.end);
 
-    this.fetchProjectWorkers(entry.projectId)
+    this.fetchProjectWorkers(entry.projectId);
 
     this.setState({
       ...entry,
@@ -71,7 +61,8 @@ class Entries extends React.Component {
 
   async fetchProjectWorkers(projectId) {
     const result = await this.props.client.query({
-      query: getProjectWorkers, variables: { _id: projectId }
+      query: getProjectWorkers,
+      variables: { _id: projectId }
     });
 
     this.setState({
@@ -80,8 +71,8 @@ class Entries extends React.Component {
   }
 
   async selectProject(projectId) {
-    await this.fetchProjectWorkers(projectId)
-    this.handleChange('projectId', projectId)
+    await this.fetchProjectWorkers(projectId);
+    this.handleChange("projectId", projectId);
   }
 
   async fetchProjects(props) {
@@ -92,18 +83,18 @@ class Entries extends React.Component {
 
     this.setState({
       projects: result.data.projects,
-      loading: false,
+      loading: false
     });
   }
 
-  handleChange(name, value) {
-    this.setState({ [name]: value });
-  }
+  handleChange = (name, value) => this.setState({ [name]: value });
+
+  clear = () => this.setState(initState);
 
   render() {
     const {
       classes,
-      data: { entries, loading, refetch },
+      data: { entries, loading, refetch }
     } = this.props;
 
     const {
@@ -136,7 +127,6 @@ class Entries extends React.Component {
           };
         }));
 
-    console.log(this.state);
     const addDraft = () => {
       events.push({
         workerId: workerId,
@@ -165,6 +155,7 @@ class Entries extends React.Component {
               entry={this.state}
               refetch={() => refetch()}
               selectProject={projectId => this.selectProject(projectId)}
+              clear={() => this.clear()}
             />
             <ListEntries entries={loading ? [] : entries} />
           </Grid>
@@ -190,4 +181,9 @@ export default withStyles(theme => ({
     textAlign: "center",
     color: theme.palette.text.secondary
   }
-}))(compose(withApollo, graphql(getEntries))(Entries));
+}))(
+  compose(
+    withApollo,
+    graphql(getEntries)
+  )(Entries)
+);
