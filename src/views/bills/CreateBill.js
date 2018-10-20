@@ -21,6 +21,7 @@ import MomentUtils from "material-ui-pickers/utils/moment-utils";
 import moment from "moment";
 
 import DashboardList from "../dashboard/DashboardList";
+import TitleBar from "../../partials/TitleBar";
 
 class CreateBill extends React.Component {
   constructor(props) {
@@ -99,7 +100,7 @@ class CreateBill extends React.Component {
       projectId,
       start,
       end,
-      entries,
+      entries
     } = this.state;
 
     return (
@@ -118,115 +119,122 @@ class CreateBill extends React.Component {
           console.log(this.state);
           return (
             <Slide direction="left" in={!loading} mountOnEnter unmountOnExit>
-              <Paper className={classes.paper}>
-                <form
-                  onSubmit={e => {
-                    e.preventDefault();
-                    create({
-                      variables: {
-                        customerId,
-                        projectId,
-                        start,
-                        end
-                      }
-                    });
-                  }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <FormControl fullWidth className={classes.textField}>
-                    <InputLabel htmlFor="select-customer">
-                      Select customer
-                    </InputLabel>
-                    <Select
-                      value={customerId}
-                      onChange={e => this.selectCustomer(e.target.value)}
-                      inputProps={{
-                        name: "Customer",
-                        id: "select-customer"
-                      }}
-                    >
-                      {this.state.loading
-                        ? "Loading"
-                        : customers.map(customer => (
-                            <MenuItem key={customer._id} value={customer._id}>
-                              {customer.name}
-                            </MenuItem>
-                          ))}
-                    </Select>
-                  </FormControl>
-
-                  <FormControl fullWidth className={classes.textField}>
-                    <InputLabel htmlFor="select-project">
-                      Select project
-                    </InputLabel>
-                    <Select
-                      disabled={customerId === "" || loading}
-                      value={projectId}
-                      onChange={e =>
-                        this.handleChange("projectId", e.target.value)
-                      }
-                      inputProps={{
-                        name: "Project",
-                        id: "select-project"
-                      }}
-                    >
-                      {loading
-                        ? "Loading"
-                        : projects.map(project => (
-                            <MenuItem key={project._id} value={project._id}>
-                              {project.name}
-                            </MenuItem>
-                          ))}
-                    </Select>
-                  </FormControl>
-
-                  <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <div className={classes.root}>
-                      <InlineDatePicker
-                        disabled={loading}
-                        className={classes.inputField}
-                        label="Billing period start"
-                        value={start.toDate()}
-                        onChange={start => this.handleChange("start", start)}
-                        ampm="false"
-                        maxDate={end.toDate()}
-                        format="DD.MM.YYYY"
-                      />
-
-                      <InlineDatePicker
-                        disabled={loading}
-                        className={classes.inputField}
-                        label="Billing period end"
-                        value={end.toDate()}
-                        onChange={end => this.handleChange("end", end)}
-                        ampm="false"
-                        minDate={start.toDate()}
-                        format="DD.MM.YYYY"
-                      />
-                    </div>
-                  </MuiPickersUtilsProvider>
-
-                  {projectId === "" ? "" : <DashboardList entries={entries} />}
-
-                  <Button
-                    disabled={loading}
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    className={classes.textField}
+              <div>
+                <TitleBar title="Create bill" push="/bills" />
+                <Paper className={classes.paper}>
+                  <form
+                    onSubmit={e => {
+                      e.preventDefault();
+                      create({
+                        variables: {
+                          customerId,
+                          projectId,
+                          start,
+                          end
+                        }
+                      });
+                    }}
+                    noValidate
+                    autoComplete="off"
                   >
-                    {loading ? (
-                      <CircularProgress
-                        size={24}
-                        className={classes.buttonProgress}
-                      />
+                    <FormControl fullWidth className={classes.textField}>
+                      <InputLabel htmlFor="select-customer">
+                        Select customer
+                      </InputLabel>
+                      <Select
+                        value={customerId}
+                        onChange={e => this.selectCustomer(e.target.value)}
+                        inputProps={{
+                          name: "Customer",
+                          id: "select-customer"
+                        }}
+                      >
+                        {this.state.loading
+                          ? "Loading"
+                          : customers.map(customer => (
+                              <MenuItem key={customer._id} value={customer._id}>
+                                {customer.name}
+                              </MenuItem>
+                            ))}
+                      </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth className={classes.textField}>
+                      <InputLabel htmlFor="select-project">
+                        Select project
+                      </InputLabel>
+                      <Select
+                        disabled={customerId === "" || loading}
+                        value={projectId}
+                        onChange={e =>
+                          this.handleChange("projectId", e.target.value)
+                        }
+                        inputProps={{
+                          name: "Project",
+                          id: "select-project"
+                        }}
+                      >
+                        {loading
+                          ? "Loading"
+                          : projects.map(project => (
+                              <MenuItem key={project._id} value={project._id}>
+                                {project.name}
+                              </MenuItem>
+                            ))}
+                      </Select>
+                    </FormControl>
+
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                      <div className={classes.root}>
+                        <InlineDatePicker
+                          disabled={loading}
+                          className={classes.inputField}
+                          label="Billing period start"
+                          value={start.toDate()}
+                          onChange={start => this.handleChange("start", start)}
+                          ampm="false"
+                          maxDate={end.toDate()}
+                          format="DD.MM.YYYY"
+                        />
+
+                        <InlineDatePicker
+                          disabled={loading}
+                          className={classes.inputField}
+                          label="Billing period end"
+                          value={end.toDate()}
+                          onChange={end => this.handleChange("end", end)}
+                          ampm="false"
+                          minDate={start.toDate()}
+                          format="DD.MM.YYYY"
+                        />
+                      </div>
+                    </MuiPickersUtilsProvider>
+
+                    {projectId === "" ? (
+                      ""
                     ) : (
-                      "Add"
+                      <DashboardList entries={entries} />
                     )}
-                  </Button>
-                </form>
-              </Paper>
+
+                    <Button
+                      disabled={loading}
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      className={classes.textField}
+                    >
+                      {loading ? (
+                        <CircularProgress
+                          size={24}
+                          className={classes.buttonProgress}
+                        />
+                      ) : (
+                        "Add"
+                      )}
+                    </Button>
+                  </form>
+                </Paper>
+              </div>
             </Slide>
           );
         }}

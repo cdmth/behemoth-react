@@ -7,9 +7,10 @@ import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 
-import moment from 'moment'
+import moment from "moment";
 
-import BillEntries from './BillEntries'
+import BillEntries from "./BillEntries";
+import TitleBar from "../../partials/TitleBar";
 
 const Bill = props => {
   const { classes } = props;
@@ -18,27 +19,26 @@ const Bill = props => {
     <Query query={getBill} variables={{ billId: props.match.params.id }}>
       {({ loading, error, data }) => {
         if (error) {
-          return "Erro  r";
-        }  
+          return "Error";
+        }
 
         return (
           <Slide direction="left" in={!loading} mountOnEnter unmountOnExit>
-            <Paper className={classes.paper}>
-              {loading ? (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
+            {loading ? (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            ) : (
+              <div>
+                <TitleBar
+                  title={`${data.bill.customer.name} - ${moment(
+                    data.bill.billDate
+                  ).format("DD.MM.YYYY")}`}
+                  push="/bills"
                 />
-              ) : (
-                <div>
-                  <Typography variant="h4" gutterBottom>
-                    {data.bill.customer.name} - {moment(data.bill.billDate).format('DD.MM.YYYY')}
-                  </Typography>
-
+                <Paper className={classes.paper}>
                   <BillEntries entries={data.bill.entries} />
-                </div>
-              )}
-            </Paper>
+                </Paper>
+              </div>
+            )}
           </Slide>
         );
       }}

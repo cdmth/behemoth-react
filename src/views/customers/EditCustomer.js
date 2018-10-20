@@ -10,6 +10,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
 
+import TitleBar from "../../partials/TitleBar";
+
 class EditCustomer extends React.Component {
   constructor(props) {
     super()
@@ -58,6 +60,8 @@ class EditCustomer extends React.Component {
         if(error) { return 'Error!' }
         return (
         <Slide direction="left" in={!this.state.loading} mountOnEnter unmountOnExit>
+          <div>
+          <TitleBar title={`Edit ${this.state.name}`} push="/customers" />
           <Paper className={classes.paper}>
             <form
               onSubmit={e => {
@@ -103,6 +107,7 @@ class EditCustomer extends React.Component {
               </Mutation>
             </form>
           </Paper>
+          </div>
         </Slide>
         )
       }}

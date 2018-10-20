@@ -9,6 +9,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
 
+import TitleBar from "../../partials/TitleBar";
+
 
 class CreateCustomer extends React.Component {
   constructor() {
@@ -36,6 +38,8 @@ class CreateCustomer extends React.Component {
           if(error) { return 'Error!' }
           return (
           <Slide direction="left" in={!loading} mountOnEnter unmountOnExit>
+          <div>
+          <TitleBar title="Create customer" push="/customers" />
             <Paper className={classes.paper}>
               <form
                 onSubmit={e => {
@@ -63,8 +67,9 @@ class CreateCustomer extends React.Component {
                     <CircularProgress size={24} className={classes.buttonProgress} /> : "Add"}
                 </Button>
               </form>
-            </Paper>
+            </Paper>          </div>
           </Slide>
+
           )
         }}
       </Mutation>
@@ -73,9 +78,6 @@ class CreateCustomer extends React.Component {
 };
 
 export default withStyles((theme) => ({
-  root: {
-    paddingTop: "20px"
-  },
   paper: {
     padding: theme.spacing.unit * 2,
     color: theme.palette.text.secondary,

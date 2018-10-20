@@ -11,7 +11,6 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
 import { countHours } from '../../helpers/Timehelper'
-import DeleteIcon from '@material-ui/icons/Delete';
 import 'typeface-roboto';
 
 class BillEntries extends React.Component {
