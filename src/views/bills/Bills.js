@@ -17,6 +17,7 @@ import AddIcon from "@material-ui/icons/Add";
 import moment from "moment";
 
 import Grid from "@material-ui/core/Grid";
+import Grow from "@material-ui/core/Grow";
 import SettingsIcon from "@material-ui/icons/Settings";
 import WorkIcon from "@material-ui/icons/Work";
 
@@ -53,37 +54,39 @@ class Bills extends React.Component {
                   >
                     <AddIcon />
                   </Button>
-                  <List>
-                    {data.bills.map(bill => (
-                      <ListItem
-                        key={bill._id}
-                        component={Link}
-                        to={`/bills/show/${bill._id}`}
-                        button
-                      >
-                        <ListItemAvatar>
-                          <Avatar>
-                            <WorkIcon />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={`${bill.customer.name} - ${moment(
-                            bill.billDate
-                          ).format("DD.MM.YYYY")}`}
-                          secondary={`${bill.project.name}`}
-                        />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            aria-label="Settings"
-                            component={Link}
-                            to={`/bills/settings/${bill._id}`}
-                          >
-                            <SettingsIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    ))}
-                  </List>
+                  <Grow in={!loading}>
+                    <List>
+                      {data.bills.map(bill => (
+                        <ListItem
+                          key={bill._id}
+                          component={Link}
+                          to={`/bills/show/${bill._id}`}
+                          button
+                        >
+                          <ListItemAvatar>
+                            <Avatar>
+                              <WorkIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={`${bill.customer.name} - ${moment(
+                              bill.billDate
+                            ).format("DD.MM.YYYY")}`}
+                            secondary={`${bill.project.name}`}
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              aria-label="Settings"
+                              component={Link}
+                              to={`/bills/settings/${bill._id}`}
+                            >
+                              <SettingsIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Grow>
                 </Grid>
                 <Grid item={true} md={6}>
                   <Route

@@ -48,6 +48,16 @@ export const updateWorker = gql`
   }
 `
 
+export const updateProjectWorker = gql`
+  mutation updateProjectWorker($projectId: String!, $workerId: String!, $rate: String) {
+    updateProjectWorker(projectId: $projectId, workerId: $workerId, rate: $rate) {
+      projectId
+      workerId
+      rate
+    }
+  }
+`
+
 // Delete worker 
 export const deleteWorker = gql`
 mutation deleteWorker($_id: String!) {

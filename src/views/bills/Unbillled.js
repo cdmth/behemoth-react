@@ -37,7 +37,7 @@ const UnBilled = props => {
                 <Typography variant="h6" color="inherit" className={classes.flex}>
                   {data.unbilledEntriesInProjects.length > 0
                     ? "Unbilled entries by project"
-                    : ""}
+                    : "No unbilled entries :("}
                 </Typography>
               </Toolbar>
             </AppBar>
