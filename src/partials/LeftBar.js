@@ -61,14 +61,15 @@ const mainListItems = () => (
         <ListItemText primary="Bills" />
       </ListItem>
     </Link>
-    <Link to="/login" style={{ textDecoration: 'none' }}>
+    <Link to="/signin" style={{ textDecoration: 'none' }}>
       <ListItem button={true}>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Login" />
+        <ListItemText primary="signin" />
       </ListItem>
     </Link>
+    <button onClick={localStorage.setItem('firebase-token', null)}>Log out</button>
   </List>
 );
 

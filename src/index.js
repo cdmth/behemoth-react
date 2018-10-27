@@ -12,7 +12,8 @@ import { getMainDefinition } from 'apollo-utilities'
 import { setContext } from 'apollo-link-context'
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('auth-token')
+  const token = localStorage.getItem('firebase-token')
+
   return {
     headers: {
       ...headers,
@@ -30,13 +31,19 @@ const wsLink = new WebSocketLink({
   uri: `ws://localhost:3001/graphql`
 });
 
+/*const logoutLink = onError(({ networkError }) => {
+  if (networkError.statusCode === 401) {
+    localStorage.setItem('firebase-token', null)
+  }
+})*/
+
 const link = split(
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
     return kind === 'OperationDefinition' && operation === 'subscription'
   },
   wsLink,
-  authLink.concat(httpLink)
+  authLink.concat(httpLink)//.concat(logoutLink)
 )
 
 const client = new ApolloClient({
