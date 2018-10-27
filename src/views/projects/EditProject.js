@@ -5,7 +5,8 @@ import {
   updateProject,
   deleteProject,
   addProjectWorker,
-  deleteProjectWorker
+  deleteProjectWorker,
+  updateProjectWorker
 } from "../../graphql/mutations";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -21,7 +22,6 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import Chip from "@material-ui/core/Chip";
 import FaceIcon from "@material-ui/icons/Face";
-
 import TitleBar from "../../partials/TitleBar";
 
 class EditProject extends React.Component {
@@ -69,7 +69,7 @@ class EditProject extends React.Component {
 
   render() {
     const { classes, refetch, data, history } = this.props;
-    const { _id, workerId, workers, projectWorkers, rate } = this.state;
+    const { _id, workerId, workers, projectWorkers, rate, editWorker } = this.state;
 
     return (
       <Mutation
@@ -122,9 +122,12 @@ class EditProject extends React.Component {
                         </InputLabel>
                       </div>
                       <Mutation
-                        mutation={deleteProjectWorker}
+                        mutation={editWorker ? updateProjectWorker : deleteProjectWorker}
                         onCompleted={() => {
                           data.refetch();
+                          this.setState({
+                            editWorker: false
+                          })
                         }}
                       >
                         {(remove, { loading, error }) => {
@@ -134,15 +137,20 @@ class EditProject extends React.Component {
                                 <div key={w._id} id="workerArea">
                                   <Chip
                                     icon={<FaceIcon />}
-                                    label={w.name}
+                                    label={`${w.name} - ${w.rate}e/h`}
                                     onClick={() =>
-                                      history.push(`/workers/show/${w._id}`)
+                                      this.setState({
+                                        workerId: w._id,
+                                        rate: w.rate,
+                                        editWorker: true
+                                      })
                                     }
                                     onDelete={() =>
                                       remove({
                                         variables: {
                                           workerId: w._id,
-                                          projectId: _id
+                                          projectId: _id,
+                                          rate: rate
                                         }
                                       })
                                     }
@@ -166,10 +174,11 @@ class EditProject extends React.Component {
                             <div className="add-project-worker">
                               <FormControl className={classes.field}>
                                 <InputLabel htmlFor="select-worker">
-                                  Add worker
+                                  {editWorker ? "Update worker" : "Add worker" }
                                 </InputLabel>
                                 <Select
                                   value={workerId}
+                                  disabled={editWorker}
                                   onChange={event =>
                                     this.setState({
                                       workerId: event.target.value
@@ -223,7 +232,7 @@ class EditProject extends React.Component {
                                       }
                                     >
                                       <AddIcon />
-                                      Add worker
+                                      {editWorker ? "Update" : "Add" } 
                                     </Button>
                                     <Button
                                       className={classes.buttonGroup}
@@ -233,7 +242,8 @@ class EditProject extends React.Component {
                                       onClick={() =>
                                         this.setState({
                                           rate: "",
-                                          workerId: ""
+                                          workerId: "",
+                                          editWorker: false
                                         })
                                       }
                                     >

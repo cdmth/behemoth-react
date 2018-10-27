@@ -148,6 +148,7 @@ export const getProjectWorkers = gql`
       workers {
         _id
         name
+        rate
       }
     }
   }
