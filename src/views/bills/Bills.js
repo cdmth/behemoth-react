@@ -88,7 +88,7 @@ class Bills extends React.Component {
                     </List>
                   </Grow>
                 </Grid>
-                <Grid item={true} md={6}>
+                <Grid item={true} md={8}>
                   <Route
                     exact={true}
                     path="/bills/"

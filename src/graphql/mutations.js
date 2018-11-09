@@ -2,20 +2,30 @@ import gql from "graphql-tag";
 
 // Adds Customer
 export const addCustomer = gql`
-  mutation CreateCustomer($name: String) {
-    createCustomer(name: $name) {
+  mutation CreateCustomer($name: String, $businessId: String, $address: String, $postalCode: String, $city: String, $country: String) {
+    createCustomer(name: $name, businessId: $businessId, address: $address, postalCode: $postalCode, city: $city, country: $country) {
       _id
       name
+      businessId
+      address
+      postalCode
+      country
+      city
     }
   }
 `;
 
 // Update Customer
 export const updateCustomer = gql`
-  mutation updateCustomer($_id: String!, $name: String!) {
-    updateCustomer(_id: $_id, name: $name) {
+  mutation updateCustomer($_id: String!, $name: String!, $businessId: String, $address: String, $postalCode: String, $city: String, $country: String) {
+    updateCustomer(_id: $_id, name: $name, businessId: $businessId, address: $address, postalCode: $postalCode, city: $city, country: $country) {
       _id
       name
+      businessId
+      address
+      postalCode
+      country
+      city
     }
   }
 `

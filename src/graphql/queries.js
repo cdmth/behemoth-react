@@ -16,6 +16,11 @@ export const queryCustomer = gql`
     customer(_id: $_id) {
       _id
       name
+      businessId
+      address
+      postalCode
+      country
+      city
     }
   }
 `
@@ -215,7 +220,12 @@ query Bill($billId: String!) {
       name
     }
     customer {
-      name
+      name,
+      address,
+      businessId,
+      postalCode,
+      city,
+      country
     }
     entries {
       _id
@@ -286,6 +296,10 @@ query unbilledEntriesInProjects {
       end
       description
       price
+      worker {
+        name
+        rate
+      }
     }
   }
 }

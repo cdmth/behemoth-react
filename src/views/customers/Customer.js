@@ -26,7 +26,12 @@ const Customer = props => {
               <div>
                 <TitleBar title={data.customer.name} push="/customers" />
                 <Paper className={classes.paper}>
-                  <p>Need some customer info</p>
+                <p>{data.customer.name}</p>
+                <p>{data.customer.businessId}</p>
+                <p>{data.customer.address}</p>
+                <p>{data.customer.postalCode}</p>
+                <p>{data.customer.city}</p>
+                <p>{data.customer.country}</p>
                 </Paper>
               </div>
             )}

@@ -1,48 +1,72 @@
-import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import moment from 'moment'
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import moment from "moment";
 
-import IconButton from '@material-ui/core/IconButton'
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import Avatar from '@material-ui/core/Avatar';
-import WorkIcon from '@material-ui/icons/Work';
-import { countHours } from '../../helpers/Timehelper'
-import 'typeface-roboto';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { countHours } from "../../helpers/Timehelper";
+import "typeface-roboto";
+
+// _id: String
+// projectId: String!
+// workerId: String!
+// start: String
+// end: String
+// billId: String
+// description: String
+// price: Float
+// bill: Bill
+// project: Project
+// worker: Worker
 
 class BillEntries extends React.Component {
+
   render() {
-    const { entries } = this.props
+    const { classes, entries } = this.props;
     return (
-      <List>
-        {entries.map((entry) => (
-        <ListItem key={entry._id}>
-          <ListItemAvatar>
-            <Avatar>
-              <WorkIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={`${countHours(entry.start, entry.end)}`}
-            secondary={`${moment(entry.start).format("DD.MM HH:mm")} - ${moment(entry.end).format("HH:mm")} ${entry.description}`}
-          />
-          <ListItemSecondaryAction>
-            <IconButton aria-label="Delete">
-              <p>{entry.price}</p>
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        ))}
-    </List>
+      <Table padding="dense" className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Time</TableCell>
+            <TableCell>Worker</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell>Period</TableCell>
+            <TableCell>Total hours</TableCell>
+            <TableCell>Rate(€)</TableCell>
+            <TableCell>Amount(€)</TableCell>
+            <TableCell>VAT(%)</TableCell>
+            <TableCell>Amount (VAT) (€)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {entries.map(entry => {
+            return (
+              <TableRow key={entry._id} >
+                <TableCell component="th" scope="entry">
+                  {moment(entry.start).format("DD.MM.YY")}
+                </TableCell>
+                <TableCell>{entry.worker.name}</TableCell>
+                <TableCell>{entry.description}</TableCell>
+                <TableCell>{moment(entry.start).format("HH:mm")} - {moment(entry.end).format("HH:mm")}</TableCell>
+                <TableCell>{countHours(entry.start, entry.end)}</TableCell>
+                <TableCell>{entry.worker.rate}</TableCell>
+                <TableCell>{entry.price}</TableCell>
+                <TableCell>24%</TableCell>
+                <TableCell>{entry.price*1.24}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     );
   }
 }
 
-export default withStyles((theme) => ({
+export default withStyles(theme => ({
   root: {
     paddingTop: "20px"
   }
-}))(BillEntries)
+}))(BillEntries);

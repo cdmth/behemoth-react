@@ -14,6 +14,7 @@ import Entries from './views/entries/Entries'
 import Workers from './views/workers/Workers'
 import Bills from './views/bills/Bills'
 import SignInScreen from './views/signin/SignInScreen'
+import firebase, { auth, provider } from './helpers/firebase.js';
 
 const drawerWidth = 240;
 
@@ -23,41 +24,28 @@ class App extends React.Component  {
     super(props)
 
     this.state = {
-      redirect: false
+      redirect: false,
+      user: null
     }
   }
 
-  componentDidMount() {
-    if (typeof window !== 'undefined') {
-        this.setState({redirect: !localStorage.getItem('firebase-token') ? true : false})
-        window.addEventListener('storage', this.localStorageUpdated)
-    }
-  }
-  componentWillUnmount(){
-      if (typeof window !== 'undefined') {
-          window.removeEventListener('storage', this.localStorageUpdated)
-      }
-  }
-
-  localStorageUpdated() {
-    console.log('vaihtuuko')
-    if (!localStorage.getItem('firebase-token')) {
-      this.setState({
-        redirect: true
-      })
-    }
+  login() {
+    auth.signInWithPopup(provider) 
+      .then((result) => {
+        const user = result.user;
+        this.setState({
+          user
+        });
+      });
   }
 
   render() {
-    console.log('****************')
-    console.log(this.state.redirect)
-
     const { classes } = this.props
 
     return (
       <Router>
         <div className={classes.root}>
-          {this.state.redirect && <Redirect to='/signin'/>}
+          {this.state.user && <Redirect to='/signin'/>}
           <Header />
           <Drawer variant="permanent" classes={{paper: classes.drawerPaper}}>
             <div className={classes.toolbar} />

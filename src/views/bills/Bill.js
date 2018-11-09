@@ -35,6 +35,14 @@ const Bill = props => {
                   push="/bills"
                 />
                 <Paper className={classes.paper}>
+                  <p>{data.bill.customer.name}</p>
+                  <p>{data.bill.customer.address}</p>
+                  <p>{data.bill.customer.postalCode}</p>
+                  <p>{data.bill.customer.city}</p>
+                  <p>{data.bill.customer.country}</p>
+                </Paper>
+
+                <Paper className={classes.paper}>
                   <BillEntries entries={data.bill.entries} />
                 </Paper>
               </div>
@@ -51,6 +59,7 @@ export default withStyles(theme => ({
     paddingTop: "20px"
   },
   paper: {
+    marginTop: "20px",
     padding: theme.spacing.unit * 2,
     color: theme.palette.text.secondary
   }

@@ -27,12 +27,11 @@ class DashboardList extends React.Component {
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={`${countHours(entry.start, entry.end)}  ${entry.project.name}`}
-            secondary={`${moment(entry.start).format("DD.MM HH:mm")} - ${moment(entry.end).format("HH:mm")}`}
+            primary={`${countHours(entry.start, entry.end)}  ${entry.description}`}
+            secondary={`${moment(entry.start).format("DD.MM HH:mm")} - ${moment(entry.end).format("HH:mm")}, ${entry.project.name}`}
           />
           <ListItemSecondaryAction>
             <IconButton aria-label="Delete">
-              <OfflineBoltIcon />
               <p>{entry.price}</p>
             </IconButton>
           </ListItemSecondaryAction>

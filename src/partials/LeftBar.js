@@ -11,7 +11,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
-const mainListItems = () => (
+const mainListItems = (props) => (
   <List>
     <Link to="/" style={{ textDecoration: 'none' }}>
       <ListItem button={true}>
@@ -69,7 +69,6 @@ const mainListItems = () => (
         <ListItemText primary="signin" />
       </ListItem>
     </Link>
-    <button onClick={localStorage.setItem('firebase-token', null)}>Log out</button>
   </List>
 );
 
