@@ -17,7 +17,6 @@ firebase.auth().onAuthStateChanged(user => {
     // User is signed in.
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
       // Send token to your backend via HTTPS
-      console.log('bää')
       localStorage.setItem('firebase-token', idToken)
     }).catch(function(error) {
       // Handle error
@@ -38,7 +37,7 @@ export const auth = firebase.auth();
 // Configure FirebaseUI.
 export const uiConfig = {
   // Popup signin flow rather than redirect flow.
-  signInFlow: 'popup',
+  signInFlow: 'redirect',
   // Redirect to / after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
   signInSuccessUrl: '/',
   // We will display Google and Facebook as auth providers.
@@ -46,5 +45,3 @@ export const uiConfig = {
     firebase.auth.EmailAuthProvider.PROVIDER_ID
   ]
 };
-
-export default firebase

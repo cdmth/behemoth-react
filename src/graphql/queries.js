@@ -124,6 +124,8 @@ export const getEntries = gql`
       end
       description
       price
+      hours
+      hoursFormatted
       worker {
         name
         rate
@@ -234,6 +236,8 @@ query Bill($billId: String!) {
       end
       description
       price
+      hours
+      hoursFormatted
       worker {
         name
         rate
@@ -296,6 +300,8 @@ query unbilledEntriesInProjects {
       end
       description
       price
+      hours
+      hoursFormatted
       worker {
         name
         rate

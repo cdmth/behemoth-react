@@ -1,8 +1,6 @@
 import React from "react";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
-import { countHours } from '../../helpers/Timehelper'
-
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -14,7 +12,7 @@ const eventComponent = ({ event }) => (
       <p className="">{event.name}</p>
       <p className="">{event.description}</p>
     </span>
-    <p className=""><strong className="">{countHours(event.start, event.end)}</strong></p>
+    <p className=""><strong className="">{event.hoursFormatted}</strong></p>
   </span>
 )
 
