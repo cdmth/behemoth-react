@@ -4,6 +4,7 @@ import { getBill } from "../../graphql/queries";
 import Slide from "@material-ui/core/Slide";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 
@@ -35,11 +36,16 @@ const Bill = props => {
                   push="/bills"
                 />
                 <Paper className={classes.paper}>
-                  <p>{data.bill.customer.name}</p>
-                  <p>{data.bill.customer.address}</p>
-                  <p>{data.bill.customer.postalCode}</p>
-                  <p>{data.bill.customer.city}</p>
-                  <p>{data.bill.customer.country}</p>
+                  <div style={{display: "table"}}>
+                    <Typography style={{display: "table"}} variant="title">
+                      {data.bill.customer.name}
+                    </Typography>
+                    <Typography style={{display: "table"}}>{data.bill.customer.address}</Typography>
+                    <Typography style={{display: "table"}}>
+                      {data.bill.customer.postalCode} {data.bill.customer.city}
+                    </Typography>
+                    <Typography style={{display: "table"}}>{data.bill.customer.country}</Typography>
+                  </div>
                 </Paper>
 
                 <Paper className={classes.paper}>
