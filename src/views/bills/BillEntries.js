@@ -51,7 +51,7 @@ class BillEntries extends React.Component {
                 <TableCell>{entry.worker.name}</TableCell>
                 <TableCell>{entry.description}</TableCell>
                 <TableCell>{moment(entry.start).format("HH:mm")} - {moment(entry.end).format("HH:mm")}</TableCell>
-                <TableCell>{countHours(entry.start, entry.end)}</TableCell>
+                <TableCell>{entry.hours}</TableCell>
                 <TableCell>{entry.worker.rate}</TableCell>
                 <TableCell>{entry.price}</TableCell>
                 <TableCell>24%</TableCell>
