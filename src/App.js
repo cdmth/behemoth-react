@@ -14,7 +14,7 @@ import Entries from './views/entries/Entries'
 import Workers from './views/workers/Workers'
 import Bills from './views/bills/Bills'
 import SignInScreen from './views/signin/SignInScreen'
-import firebase, { auth, provider } from './helpers/firebase.js';
+import { auth, provider } from './helpers/firebase.js';
 
 const drawerWidth = 240;
 

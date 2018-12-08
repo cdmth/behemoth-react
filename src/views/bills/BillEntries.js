@@ -7,20 +7,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { countHours } from "../../helpers/Timehelper";
 import "typeface-roboto";
-
-// _id: String
-// projectId: String!
-// workerId: String!
-// start: String
-// end: String
-// billId: String
-// description: String
-// price: Float
-// bill: Bill
-// project: Project
-// worker: Worker
 
 class BillEntries extends React.Component {
 
@@ -51,7 +38,7 @@ class BillEntries extends React.Component {
                 <TableCell>{entry.worker.name}</TableCell>
                 <TableCell>{entry.description}</TableCell>
                 <TableCell>{moment(entry.start).format("HH:mm")} - {moment(entry.end).format("HH:mm")}</TableCell>
-                <TableCell>{entry.hours}</TableCell>
+                <TableCell>{entry.hoursFormatted}</TableCell>
                 <TableCell>{entry.worker.rate}</TableCell>
                 <TableCell>{entry.price}</TableCell>
                 <TableCell>24%</TableCell>

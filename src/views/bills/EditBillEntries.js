@@ -10,7 +10,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
-import { countHours } from '../../helpers/Timehelper'
 import DeleteIcon from '@material-ui/icons/Delete';
 import 'typeface-roboto';
 
@@ -27,7 +26,7 @@ class BillEntries extends React.Component {
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={`${countHours(entry.start, entry.end)}`}
+            primary={`${entry.hoursFormatted}`}
             secondary={`${moment(entry.start).format("DD.MM HH:mm")} - ${moment(entry.end).format("HH:mm")} ${entry.description}`}
           />
           <ListItemSecondaryAction>

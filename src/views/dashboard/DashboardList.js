@@ -10,8 +10,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
-import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
-import { countHours } from '../../helpers/Timehelper'
 import 'typeface-roboto';
 
 class DashboardList extends React.Component {
@@ -27,7 +25,7 @@ class DashboardList extends React.Component {
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={`${countHours(entry.start, entry.end)}  ${entry.description}`}
+            primary={`${entry.hoursFormatted}  ${entry.description}`}
             secondary={`${moment(entry.start).format("DD.MM HH:mm")} - ${moment(entry.end).format("HH:mm")}, ${entry.project.name}`}
           />
           <ListItemSecondaryAction>
