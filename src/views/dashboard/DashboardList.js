@@ -30,7 +30,6 @@ class DashboardList extends React.Component {
           />
           <ListItemSecondaryAction>
             <IconButton aria-label="Delete">
-              <p>{entry.price}</p>
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>

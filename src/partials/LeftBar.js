@@ -61,14 +61,6 @@ const mainListItems = (props) => (
         <ListItemText primary="Bills" />
       </ListItem>
     </Link>
-    <Link to="/signin" style={{ textDecoration: 'none' }}>
-      <ListItem button={true}>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="signin" />
-      </ListItem>
-    </Link>
   </List>
 );
 

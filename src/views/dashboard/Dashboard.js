@@ -32,19 +32,11 @@ class Dashboard extends React.Component {
           return (
             <div className={classes.root}>
               <Grid container={true} spacing={8}>
-                <Grid item={true} xs={4}>
+                <Grid item={true} xs={8}>
                   <Paper className={classes.paper}>
                     <DashboardCreate />
                     <DashboardList entries={data.entries}/>
                   </Paper>
-                </Grid>
-                <Grid item={true} xs={4}>
-                  <Paper className={classes.paper}>
-                    xs=4
-                  </Paper>
-                </Grid>
-                <Grid item={true} xs={4}>
-                  <Paper className={classes.paper}>xs=4</Paper>
                 </Grid>
               </Grid>
             </div>

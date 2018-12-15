@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 function Header(props) {
   const { classes } = props;
 
+  console.log(props)
+
   return (
     <div className={classes.root}>
       <AppBar position="absolute" color="primary" className={classes.appBar}>
@@ -14,6 +16,7 @@ function Header(props) {
           <Typography variant="title" color="inherit">
             Behemoth
           </Typography>
+          {props.user ? "JEE" : "NO USER"}
         </Toolbar>
       </AppBar>
     </div>
