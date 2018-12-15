@@ -70,11 +70,10 @@ class App extends React.Component {
     return this.state.user && !this.state.loading ? (
       <Router>
         <div className={classes.root}>
-          <Header user={this.state.user} />
+          <Header user={this.state.user} logout={() => this.logout()}/>
           <Drawer variant="permanent" classes={{ paper: classes.drawerPaper }}>
             <div className={classes.toolbar} />
             <LeftBar />
-            <button onClick={() => this.logout()}>Logout</button>
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
